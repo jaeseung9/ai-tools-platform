@@ -24,15 +24,47 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        String oauthId = extractOAuthId(registrationId, attributes);
-        String email = extractEmail(registrationId, attributes);
-        String name = extractName(registrationId, attributes);
-        String profileImage = extractProfileImage(registrationId, attributes);
+        // ===== 디버깅 로그 =====
+        System.out.println("========================================");
+        System.out.println("OAuth Login Attempt");
+        System.out.println("Provider: " + registrationId);
+        System.out.println("Attributes: " + attributes);
+        System.out.println("========================================");
 
-        User user = userRepository.findByOauthId(oauthId)
-                .orElseGet(() -> createNewUser(oauthId, registrationId, email, name, profileImage));
+        try {
+            String oauthId = extractOAuthId(registrationId, attributes);
+            System.out.println("✓ OAuth ID: " + oauthId);
 
-        return oAuth2User;
+            String email = extractEmail(registrationId, attributes);
+            System.out.println("✓ Email: " + email);
+
+            String name = extractName(registrationId, attributes);
+            System.out.println("✓ Name: " + name);
+
+            String profileImage = extractProfileImage(registrationId, attributes);
+            System.out.println("✓ Profile Image: " + profileImage);
+
+            User user = userRepository.findByOauthId(oauthId)
+                    .orElseGet(() -> {
+                        System.out.println("✓ Creating new user!");
+                        User newUser = createNewUser(oauthId, registrationId, email, name, profileImage);
+                        System.out.println("✓ User created with ID: " + newUser.getId());
+                        return newUser;
+                    });
+
+            if (user.getId() != null) {
+                System.out.println("✓ Existing user found with ID: " + user.getId());
+            }
+
+            System.out.println("========================================");
+            return oAuth2User;
+
+        } catch (Exception e) {
+            System.err.println("✗ ERROR during OAuth login:");
+            System.err.println("✗ Message: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private String extractOAuthId(String provider, Map<String, Object> attributes) {
