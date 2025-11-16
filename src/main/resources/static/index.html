@@ -47,10 +47,12 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
             transition: transform 0.2s;
+            cursor: pointer;
         }
 
         .tool-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .tool-icon {
@@ -94,28 +96,22 @@
     <h2>사용 가능한 도구</h2>
 
     <div class="tools-grid">
-        <div class="tool-card" onclick="location.href='/pages/chat.html'" style="cursor:pointer;">
+        <div class="tool-card" onclick="location.href='/pages/chat.html'">
             <div class="tool-icon">💬</div>
             <div class="tool-title">Chat</div>
             <div class="tool-desc">AI와 대화하기</div>
         </div>
 
-        <div class="tool-card">
+        <div class="tool-card" onclick="location.href='/pages/image-generator.html'">
             <div class="tool-icon">🎨</div>
             <div class="tool-title">Image Generator</div>
             <div class="tool-desc">AI 이미지 생성</div>
         </div>
 
         <div class="tool-card">
-            <div class="tool-icon">✍️</div>
-            <div class="tool-title">Grammar Checker</div>
-            <div class="tool-desc">맞춤법 검사</div>
-        </div>
-
-        <div class="tool-card">
             <div class="tool-icon">📊</div>
             <div class="tool-title">Dashboard</div>
-            <div class="tool-desc">사용 통계</div>
+            <div class="tool-desc">사용 통계 (준비중)</div>
         </div>
     </div>
 </div>

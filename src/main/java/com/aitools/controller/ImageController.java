@@ -1,61 +1,46 @@
 package com.aitools.controller;
 
-import com.aitools.dto.ChatDto;
-import com.aitools.filter.RateLimitFilter;  // 추가!
-import com.aitools.service.ChatService;
+import com.aitools.dto.ImageDto;
+import com.aitools.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;  // 추가!
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/image")
 @RequiredArgsConstructor
-public class ChatController {
+public class ImageController {
 
-    private final ChatService chatService;
-    private final RateLimitFilter rateLimitFilter;  // 추가!
+    private final ImageService imageService;
 
-    @PostMapping("/message")
-    public ResponseEntity<ChatDto.Response> sendMessage(@RequestBody ChatDto.Request request) {
+    @PostMapping("/generate")
+    public ResponseEntity<ImageDto.Response> generateImage(@RequestBody ImageDto.Request request) {
         String identifier = getCurrentUserIdentifier();
-        ChatDto.Response response = chatService.sendMessage(identifier, request.getMessage());
+        ImageDto.Response response = imageService.generateImage(
+                identifier,
+                request.getPrompt(),
+                request.getSize()
+        );
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/history")
-    public ResponseEntity<List<ChatDto.History>> getHistory() {
+    public ResponseEntity<List<ImageDto.History>> getHistory() {
         String identifier = getCurrentUserIdentifier();
-        List<ChatDto.History> history = chatService.getHistory(identifier);
+        List<ImageDto.History> history = imageService.getHistory(identifier);
         return ResponseEntity.ok(history);
     }
 
     @DeleteMapping("/history/{id}")
     public ResponseEntity<Void> deleteHistory(@PathVariable Long id) {
         String identifier = getCurrentUserIdentifier();
-        chatService.deleteHistory(identifier, id);
+        imageService.deleteHistory(identifier, id);
         return ResponseEntity.ok().build();
-    }
-
-    // 남은 토큰 조회 API
-    @GetMapping("/remaining-tokens")
-    public ResponseEntity<Map<String, Object>> getRemainingTokens() {
-        String identifier = getCurrentUserIdentifier();
-        int remaining = rateLimitFilter.getRemainingTokens(identifier);
-        int dailyLimit = rateLimitFilter.getDailyLimit();  // 동적으로 가져오기
-        int used = rateLimitFilter.getUsedTokens(identifier);  // 동적으로 가져오기
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("remainingTokens", remaining);
-        result.put("dailyLimit", dailyLimit);
-        result.put("usedTokens", used);
-
-        return ResponseEntity.ok(result);
     }
 
     private String getCurrentUserIdentifier() {

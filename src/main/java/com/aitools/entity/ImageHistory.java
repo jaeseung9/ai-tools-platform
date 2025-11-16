@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chat_history",
+@Table(name = "image_history",
         indexes = {
-                @Index(name = "idx_chat_user_created",
+                @Index(name = "idx_image_user_created",
                         columnList = "user_id, created_at DESC")
         })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatHistory {
+public class ImageHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +28,16 @@ public class ChatHistory {
     private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String userMessage;
+    private String prompt;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String aiResponse;
+    private String imageUrl;
+
+    @Column(length = 20)
+    private String imageSize = "1024x1024";
 
     @Column
-    private Integer tokenUsed = 0;
-
-    private Double estimatedCost = 0.0;
+    private Double estimatedCost = 0.04;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
