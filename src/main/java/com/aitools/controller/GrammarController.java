@@ -1,61 +1,42 @@
 package com.aitools.controller;
 
-import com.aitools.dto.ChatDto;
-import com.aitools.filter.RateLimitFilter;  // 추가!
-import com.aitools.service.ChatService;
+import com.aitools.dto.GrammarDto;
+import com.aitools.service.GrammarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;  // 추가!
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/api/grammar")
 @RequiredArgsConstructor
-public class ChatController {
+public class GrammarController {
 
-    private final ChatService chatService;
-    private final RateLimitFilter rateLimitFilter;  // 추가!
+    private final GrammarService grammarService;
 
-    @PostMapping("/message")
-    public ResponseEntity<ChatDto.Response> sendMessage(@RequestBody ChatDto.Request request) {
+    @PostMapping("/check")
+    public ResponseEntity<GrammarDto.Response> checkGrammar(@RequestBody GrammarDto.Request request) {
         String identifier = getCurrentUserIdentifier();
-        ChatDto.Response response = chatService.sendMessage(identifier, request.getMessage());
+        GrammarDto.Response response = grammarService.checkGrammar(identifier, request.getText());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/history")
-    public ResponseEntity<List<ChatDto.History>> getHistory() {
+    public ResponseEntity<List<GrammarDto.History>> getHistory() {
         String identifier = getCurrentUserIdentifier();
-        List<ChatDto.History> history = chatService.getHistory(identifier);
+        List<GrammarDto.History> history = grammarService.getHistory(identifier);
         return ResponseEntity.ok(history);
     }
 
     @DeleteMapping("/history/{id}")
     public ResponseEntity<Void> deleteHistory(@PathVariable Long id) {
         String identifier = getCurrentUserIdentifier();
-        chatService.deleteHistory(identifier, id);
+        grammarService.deleteHistory(identifier, id);
         return ResponseEntity.ok().build();
-    }
-
-    // 남은 토큰 조회 API
-    @GetMapping("/remaining-tokens")
-    public ResponseEntity<Map<String, Object>> getRemainingTokens() {
-        String identifier = getCurrentUserIdentifier();
-        int remaining = rateLimitFilter.getRemainingTokens(identifier);
-        int dailyLimit = rateLimitFilter.getDailyLimit();  // 동적으로 가져오기
-        int used = rateLimitFilter.getUsedTokens(identifier);  // 동적으로 가져오기
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("remainingTokens", remaining);
-        result.put("dailyLimit", dailyLimit);
-        result.put("usedTokens", used);
-
-        return ResponseEntity.ok(result);
     }
 
     private String getCurrentUserIdentifier() {

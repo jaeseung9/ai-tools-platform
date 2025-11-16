@@ -3,6 +3,7 @@ package com.aitools.service;
 import com.aitools.dto.ChatDto;
 import com.aitools.entity.ChatHistory;
 import com.aitools.entity.User;
+import com.aitools.filter.RateLimitFilter;  // 추가!
 import com.aitools.repository.ChatHistoryRepository;
 import com.aitools.repository.UserRepository;
 import com.aitools.util.CostCalculator;
@@ -24,6 +25,7 @@ public class ChatService {
 
     private final ChatHistoryRepository chatHistoryRepository;
     private final UserRepository userRepository;
+    private final RateLimitFilter rateLimitFilter;  // 추가!
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${gemini.api.key}")
@@ -34,7 +36,6 @@ public class ChatService {
 
     @Transactional
     public ChatDto.Response sendMessage(String identifier, String message) {
-        // identifier는 이메일 또는 "naver_12345" 같은 oauthId
         User user = findUserByIdentifier(identifier);
 
         // Gemini API 호출
@@ -43,6 +44,9 @@ public class ChatService {
         String aiMessage = extractMessage(response);
         int totalTokens = extractTokens(response);
         double cost = CostCalculator.calculateChatCost(totalTokens / 2, totalTokens / 2);
+
+        // 토큰 사용량 기록 (추가!)
+        rateLimitFilter.addTokenUsage(identifier, totalTokens);
 
         // DB 저장
         ChatHistory history = ChatHistory.builder()
@@ -61,6 +65,8 @@ public class ChatService {
                 .estimatedCost(cost)
                 .build();
     }
+
+    // 나머지 메서드는 그대로...
 
     public List<ChatDto.History> getHistory(String identifier) {
         User user = findUserByIdentifier(identifier);
@@ -85,13 +91,10 @@ public class ChatService {
     }
 
     private User findUserByIdentifier(String identifier) {
-        // 일반 로그인 (이메일)
         if (identifier.contains("@")) {
             return userRepository.findByEmail(identifier)
                     .orElseThrow(() -> new RuntimeException("User not found"));
-        }
-        // 소셜 로그인 (oauthId)
-        else {
+        } else {
             return userRepository.findByOauthId(identifier)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
