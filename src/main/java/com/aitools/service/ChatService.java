@@ -27,6 +27,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final RateLimitFilter rateLimitFilter;  // 추가!
     private final RestTemplate restTemplate = new RestTemplate();
+    private final ApiUsageService apiUsageService;
 
     @Value("${gemini.api.key}")
     private String apiKey;
@@ -58,6 +59,7 @@ public class ChatService {
                 .build();
 
         chatHistoryRepository.save(history);
+        apiUsageService.recordUsage(identifier, "CHAT", cost);
 
         return ChatDto.Response.builder()
                 .message(aiMessage)
@@ -66,7 +68,6 @@ public class ChatService {
                 .build();
     }
 
-    // 나머지 메서드는 그대로...
 
     public List<ChatDto.History> getHistory(String identifier) {
         User user = findUserByIdentifier(identifier);

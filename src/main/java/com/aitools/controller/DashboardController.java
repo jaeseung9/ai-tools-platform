@@ -1,42 +1,50 @@
 package com.aitools.controller;
 
-import com.aitools.dto.GrammarDto;
-import com.aitools.service.GrammarService;
+import com.aitools.service.ApiUsageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/grammar")
+@RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
-public class GrammarController {
+public class DashboardController {
 
-    private final GrammarService grammarService;
+    private final ApiUsageService apiUsageService;
 
-    @PostMapping("/check")
-    public ResponseEntity<GrammarDto.Response> checkGrammar(@RequestBody GrammarDto.Request request) {
+    /**
+     * 이번 달 통계 조회
+     */
+    @GetMapping("/stats")
+    public ResponseEntity<ApiUsageService.MonthlyStatsDto> getMonthlyStats() {
         String identifier = getCurrentUserIdentifier();
-        GrammarDto.Response response = grammarService.checkGrammar(identifier, request.getText());
-        return ResponseEntity.ok(response);
+        ApiUsageService.MonthlyStatsDto stats = apiUsageService.getMonthlyStats(identifier);
+        return ResponseEntity.ok(stats);
     }
 
-    @GetMapping("/history")
-    public ResponseEntity<List<GrammarDto.History>> getHistory() {
+    /**
+     * 최근 N개월 통계 조회
+     */
+    @GetMapping("/usage-chart")
+    public ResponseEntity<ApiUsageService.RecentMonthsStatsDto> getUsageChart(
+            @RequestParam(defaultValue = "6") int months) {
         String identifier = getCurrentUserIdentifier();
-        List<GrammarDto.History> history = grammarService.getHistory(identifier);
-        return ResponseEntity.ok(history);
+        ApiUsageService.RecentMonthsStatsDto stats = apiUsageService.getRecentMonthsStats(identifier, months);
+        return ResponseEntity.ok(stats);
     }
 
-    @DeleteMapping("/history/{id}")
-    public ResponseEntity<Void> deleteHistory(@PathVariable Long id) {
+    /**
+     * 도구별 비용 비율
+     */
+    @GetMapping("/cost-breakdown")
+    public ResponseEntity<ApiUsageService.CostBreakdownDto> getCostBreakdown() {
         String identifier = getCurrentUserIdentifier();
-        grammarService.deleteHistory(identifier, id);
-        return ResponseEntity.ok().build();
+        ApiUsageService.CostBreakdownDto breakdown = apiUsageService.getCostBreakdown(identifier);
+        return ResponseEntity.ok(breakdown);
     }
 
     private String getCurrentUserIdentifier() {

@@ -26,6 +26,7 @@ public class ImageService {
     private final ImageHistoryRepository imageHistoryRepository;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+    private final ApiUsageService apiUsageService;
 
     @Value("${stability.api.key}")
     private String apiKey;

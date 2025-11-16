@@ -9,16 +9,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "api_usage_stats",
-       uniqueConstraints = {
-           @UniqueConstraint(
-               name = "unique_user_tool_month",
-               columnNames = {"user_id", "tool_type", "year_month"}
-           )
-       },
-       indexes = {
-           @Index(name = "idx_stats_user_month", 
-                  columnList = "user_id, year_month")
-       })
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "unique_user_tool_month",
+                        columnNames = {"user_id", "tool_type", "year_month"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_stats_user_month",
+                        columnList = "user_id, year_month")
+        })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,8 +42,8 @@ public class ApiUsageStats {
     @Column(nullable = false)
     private Double totalCost = 0.0;
 
-    @Column(nullable = false, length = 7)
-    private String yearMonth;  // "2024-11"
+    @Column(nullable = false, length = 7, name = "`year_month`")  // 백틱 추가
+    private String yearMonth;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
