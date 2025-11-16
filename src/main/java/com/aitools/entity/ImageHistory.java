@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "image_history")
+@Table(name = "image_history",
+        indexes = {
+                @Index(name = "idx_image_user_created",
+                        columnList = "user_id, created_at DESC")
+        })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

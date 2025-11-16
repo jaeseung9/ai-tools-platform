@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chat_history",
-        indexes = {
-                @Index(name = "idx_chat_user_created",
-                        columnList = "user_id, created_at DESC")
-        })
+@Table(name = "grammar_history",
+       indexes = {
+           @Index(name = "idx_grammar_user_created", 
+                  columnList = "user_id, created_at DESC")
+       })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatHistory {
+public class GrammarHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +28,13 @@ public class ChatHistory {
     private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String userMessage;
+    private String originalText;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String aiResponse;
+    @Column(columnDefinition = "TEXT")
+    private String correctedText;
 
     @Column
-    private Integer tokenUsed = 0;
-
-    private Double estimatedCost = 0.0;
+    private Integer errorCount = 0;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
