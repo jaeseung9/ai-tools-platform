@@ -1,4 +1,4 @@
-<h1 align="center">🤖 AI Tools Platform</h1>
+<h1 align="center"> AI Tools Platform</h1>
 <p align="center">
   Spring Boot + OAuth2 기반 통합 AI 도구 플랫폼<br/>
   <b>Chat</b> · <b>Image Generation</b> · <b>Usage Dashboard</b>를 하나의 인터페이스로
