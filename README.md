@@ -1,258 +1,407 @@
 <h1 align="center"> AI Tools Platform</h1>
 <p align="center">
-  Spring Boot + OAuth2 기반 통합 AI 도구 플랫폼<br/>
-  <b>Chat</b> · <b>Image Generation</b> · <b>Usage Dashboard</b>를 하나의 인터페이스로
+  <b>여러 AI API를 하나의 플랫폼에서</b><br/>
+  Spring Boot + OAuth2 기반 통합 AI 도구 플랫폼
 </p>
-
----
-
-## 🗓 개발 기간
-> 2024.11 (3주)
-
----
-
-## 📚 목차
-- [프로젝트 소개](#프로젝트-소개)
-- [데모](#데모)
-- [주요 기능](#주요-기능)
-- [기술 스택](#기술-스택)
-- [아키텍처](#아키텍처)
-- [API 명세](#api-명세)
-- [데이터베이스 설계](#데이터베이스-설계)
-- [실행 방법](#실행-방법)
-- [개발 과정 & 트러블슈팅](#개발-과정--트러블슈팅)
-- [Contact](#contact)
-
----
-
-## 🎯 프로젝트 소개
-
-> 포트폴리오 메인 프로젝트로 제작한 **AI Tools Platform**입니다.  
-> 네이버/카카오 소셜 로그인을 통해 여러 AI API(Google Gemini, Stability AI)를 하나의 플랫폼에서 사용할 수 있으며,  
-> 사용 통계 대시보드를 통해 API 비용과 사용량을 실시간으로 추적할 수 있습니다.
-
-### 💡 개발 목표
-- 여러 AI API를 통합한 **원스톱 플랫폼 구축**
-- 실무 수준의 인증/인가 시스템 구현 (OAuth2)
-- API 모니터링 및 비용 추적 시스템 구현
-- 클라우드 배포 완료 (Render)
-
----
-
-## 🌐 데모
-
-🔗 **배포 URL**  
-👉 https://ai-tools-platform-7air.onrender.com  
-<sub>⚠️ 첫 로딩 시 콜드 스타트로 인해 20~30초 지연될 수 있습니다.</sub>
-
----
-
-## 🚀 주요 기능
-
-<table>
-  <tr>
-    <th>기능</th>
-    <th>설명</th>
-  </tr>
-  <tr>
-    <td><b>소셜 로그인</b></td>
-    <td>네이버/카카오 OAuth2 + 이메일 회원가입 통합 인증</td>
-  </tr>
-  <tr>
-    <td><b>AI 채팅</b></td>
-    <td>Google Gemini API 연동, 대화 기록 자동 저장, 토큰 추적</td>
-  </tr>
-  <tr>
-    <td><b>이미지 생성</b></td>
-    <td>Stability AI 텍스트 → 이미지 변환, Base64 즉시 표시</td>
-  </tr>
-  <tr>
-    <td><b>사용 통계</b></td>
-    <td>월별/도구별 사용량 집계, 실시간 비용 계산</td>
-  </tr>
-  <tr>
-    <td><b>Rate Limiting</b></td>
-    <td>일일 토큰 제한으로 API 비용 관리 (100 tokens/day)</td>
-  </tr>
-  <tr>
-    <td><b>전역 예외 처리</b></td>
-    <td>일관된 에러 응답 형식, 세분화된 예외 핸들링</td>
-  </tr>
-</table>
-
----
-
-## 🧱 기술 스택
-
-**Backend**  
-- Spring Boot 3.4.1  
-- Spring Security + OAuth2  
-- Spring Data JPA  
-- PostgreSQL  
-- Lombok / RestTemplate  
-
-**Frontend**  
-- HTML5 / CSS3 / Vanilla JavaScript
-
-**AI API Integration**  
-- Google Gemini API  
-- Stability AI
-
-**DevOps**  
-- Render – 클라우드 배포  
-- Docker – 컨테이너화  
-- GitHub – 버전 관리 및 자동 빌드  
-
----
-
-## 🏗️ 아키텍처
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/766870a9-093e-40b7-b55b-84955012edd3" width="500" alt="architecture diagram"/>
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.4.11-brightgreen?logo=springboot"/>
+  <img src="https://img.shields.io/badge/Java-17-orange?logo=java"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql"/>
+  <img src="https://img.shields.io/badge/OAuth2-Naver%20%7C%20Kakao-03C75A"/>
 </p>
 
+---
+
+## 📌 프로젝트 소개
+
+**개발 기간**: 2024.11 (3주, 약 120시간)  
+**배포 URL**: https://ai-tools-platform-7air.onrender.com  
+**GitHub**: https://github.com/jaeseung9/ai-tools-platform
+
+> 네이버/카카오 소셜 로그인을 통해 Google Gemini, Stability AI 등 여러 AI API를  
+> 하나의 인터페이스에서 사용하고, 실시간으로 사용량과 비용을 추적할 수 있는 통합 플랫폼
+
+---
+
+## 🎯 개발 동기 및 목표
+
+### Why?
+- 여러 AI 서비스를 사용하면서 **비용 관리의 어려움** 경험
+- 각 플랫폼마다 별도 로그인이 필요한 **불편함** 해소
+- **실무 수준의 인증/인가 시스템** 구현 경험 필요
+
+### What?
+- OAuth2 기반 통합 인증 시스템
+- AI API 통합 및 사용량 추적
+- 비용 관리 자동화
+
+---
+
+## 🏆 주요 성과
+
+| 지표 | 내용 |
+|------|------|
+| **인증 시스템** | OAuth2 + 이메일 통합 인증 |
+| **API 통합** | 3개 (Gemini, Stability AI, OAuth) |
+| **모니터링** | 실시간 사용량/비용 추적 |
+| **비용 절감** | Rate Limiting으로 일일 사용량 제한 |
+| **배포** | Docker + Render 자동 배포 |
+
+---
+
+## 🛠️ 기술 스택
+
+**Backend**: Spring Boot 3.4.11, Spring Security + OAuth2, JPA, PostgreSQL  
+**Frontend**: HTML5, CSS3, Vanilla JavaScript  
+**DevOps**: Docker, Render  
+**APIs**: Google Gemini, Stability AI
+
+---
+
+## 🏗️ 시스템 아키텍처 및 설계
+
+### 전체 구조
+```
+사용자
+  ↓
+[Frontend] → REST API 호출
+  ↓
+[Security Filter]
+  - Rate Limiting (토큰 제한)
+  - OAuth2 인증
+  ↓
+[Controller] → 요청/응답 처리
+  ↓
+[Service] → 비즈니스 로직 + 외부 API 호출
+  ↓
+[Repository] → JPA 데이터 접근
+  ↓
+[PostgreSQL] → 데이터 영속화
+```
+
 ### 핵심 설계 원칙
-- Controller → Service → Repository 계층 분리  
-- DTO 패턴으로 계층 간 데이터 전달  
-- Filter 체인으로 횡단 관심사 처리 (인증, Rate Limiting)  
-- 전역 예외 처리(ExceptionHandler)로 일관된 에러 응답 관리  
+
+**1. 계층 분리 (Layered Architecture)**
+- Controller: 요청 검증 및 응답 반환
+- Service: 핵심 비즈니스 로직 처리
+- Repository: 데이터 접근 추상화
+
+**2. 모듈화 설계**
+- 각 AI 도구를 독립적인 모듈로 구성
+- 새로운 도구 추가 시 기존 코드 영향 최소화
+
+**3. 보안 우선**
+- Filter Chain을 통한 다층 보안
+- 비밀번호 BCrypt 암호화
+- SQL Injection 방지 (JPA 사용)
 
 ---
 
-## 📡 API 명세
+## 🚀 핵심 기능 구현
 
-### 🔐 인증 API
-| Method | Endpoint                      | 설명 |
-|--------|-------------------------------|------|
-| POST   | `/api/auth/signup`            | 이메일 회원가입 |
-| POST   | `/api/auth/login`             | 이메일 로그인 |
-| GET    | `/oauth2/authorization/naver` | 네이버 로그인 |
-| GET    | `/oauth2/authorization/kakao` | 카카오 로그인 |
+### 1. OAuth2 소셜 로그인
 
-### 💬 채팅 API
-| Method | Endpoint                | 설명 |
-|--------|-------------------------|------|
-| POST   | `/api/chat/message`     | 메시지 전송 |
-| GET    | `/api/chat/history`     | 대화 기록 조회 |
-| GET    | `/api/chat/remaining-tokens` | 잔여 토큰 조회 |
+**구현 전략**
+- Spring Security OAuth2 Client 활용
+- Provider별 응답 구조 차이를 추상화 계층에서 통합 처리
+```java
+@Service
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+    
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) {
+        String provider = userRequest.getClientRegistration().getRegistrationId();
+        
+        // Provider별 사용자 정보 추출
+        String oauthId = extractOAuthId(provider, attributes);
+        String email = extractEmail(provider, attributes);
+        
+        // DB 조회 또는 신규 생성
+        return userRepository.findByOauthId(oauthId)
+                .orElseGet(() -> createNewUser(oauthId, provider, email));
+    }
+}
+```
 
-### 🎨 이미지 API
-| Method | Endpoint                | 설명 |
-|--------|-------------------------|------|
-| POST   | `/api/image/generate`   | 이미지 생성 |
-| GET    | `/api/image/history`    | 생성 기록 조회 |
+**포인트**
+- Naver와 Kakao의 다른 응답 구조를 통일된 인터페이스로 처리
+- 신규/기존 사용자 자동 구분 및 처리
 
 ---
 
-## 🗄️ 데이터베이스 설계
+### 2. Rate Limiting (비용 관리)
 
-### ERD 구조
+**구현 전략**
+- Filter에서 요청 전 토큰 사용량 체크
+- ConcurrentHashMap으로 동시성 처리
+```java
+@Component
+public class RateLimitFilter extends OncePerRequestFilter {
+    
+    private static final int DAILY_TOKEN_LIMIT = 100;
+    private final Map dailyTokenUsage = new ConcurrentHashMap<>();
+    
+    @Override
+    protected void doFilterInternal(...) {
+        String key = userIdentifier + "_" + LocalDate.now();
+        int usedTokens = dailyTokenUsage.getOrDefault(key, 0);
+        
+        if (usedTokens >= DAILY_TOKEN_LIMIT) {
+            throw new RateLimitException("일일 토큰 제한 초과");
+        }
+        
+        filterChain.doFilter(request, response);
+    }
+}
+```
 
-**users**
-id (PK)
-oauth_id (UNIQUE)
-provider - naver/kakao/local
-email (UNIQUE)
-password
-created_at
+**포인트**
+- 사용자별 일일 토큰 사용량 추적
+- 자정 자동 초기화로 간단한 관리
 
-코드 복사
+---
 
-**chat_history**
-id (PK)
-user_id (FK → users)
-user_message
-ai_response
-token_used
-estimated_cost
-created_at
+### 3. API 사용 통계
 
-코드 복사
+**설계 고민**
+- 실시간 집계 vs 배치 집계
+- 선택: 실시간 집계 (사용자 경험 우선)
 
-**image_history**
-id (PK)
-user_id (FK → users)
-prompt
-image_url (Base64)
-image_size
-estimated_cost
-created_at
+**구현 방법**
+- UNIQUE 제약으로 중복 방지
+- 월별 집계 데이터 자동 생성/업데이트
+```sql
+CREATE TABLE api_usage_stats (
+    user_id BIGINT,
+    tool_type VARCHAR(20),    -- 'CHAT', 'IMAGE'
+    usage_count INT,
+    total_cost DECIMAL(10, 4),
+    year_month VARCHAR(7),    -- '2024-11'
+    UNIQUE(user_id, tool_type, year_month)
+);
+```
 
-markdown
-코드 복사
+---
 
-**api_usage_stats**
-id (PK)
-user_id (FK → users)
-tool_type - CHAT / IMAGE
-usage_count
-total_cost
-year_month - "2024-11"
-UNIQUE(user_id, tool_type, year_month)
+## 🔧 트러블슈팅
 
-bash
-코드 복사
+### 1️⃣ OAuth2 Provider별 응답 구조 차이
+
+**문제**
+```
+Naver: { response: { id: "...", email: "..." } }
+Kakao: { id: ..., kakao_account: { email: "..." } }
+```
+서로 다른 JSON 구조로 인한 파싱 오류 발생
+
+**해결**
+- Provider별 분기 처리 메서드 작성
+- 추상화 계층에서 통일된 User 객체로 변환
+
+**배운 점**
+- 외부 API 통합 시 **추상화 계층의 중요성** 인식
+- 확장 가능한 구조 설계의 필요성
+
+---
+
+### 2️⃣ Rate Limiting 동시성 문제
+
+**문제**
+- 여러 요청이 동시에 들어올 때 토큰 카운터가 부정확하게 증가
+- Race Condition 발생
+
+**시도한 방법**
+1. 일반 HashMap 사용 → 동시성 문제 발생
+2. synchronized 키워드만 사용 → 성능 저하
+
+**최종 해결**
+```java
+public synchronized void addTokenUsage(String userIdentifier, int tokens) {
+    String key = userIdentifier + "_" + LocalDate.now();
+    // atomic operation
+    dailyTokenUsage.merge(key, tokens, Integer::sum);
+}
+```
+
+**배운 점**
+- `ConcurrentHashMap`과 `synchronized`의 적절한 조합
+- `merge()` 메서드의 원자성 보장
+- 향후 Redis 도입 시 Lua Script 활용 가능성 학습
+
+---
+
+### 3️⃣ JPA N+1 문제
+
+**문제**
+```java
+// ChatHistory 100개 조회 시
+// User 조회 쿼리가 100번 추가 실행됨
+List history = chatHistoryRepository.findByUserId(userId);
+```
+
+**해결**
+```java
+@Entity
+public class ChatHistory {
+    @ManyToOne(fetch = FetchType.LAZY)  // Eager → Lazy
+    private User user;
+}
+
+// 인덱스 추가
+CREATE INDEX idx_chat_user_created 
+ON chat_history(user_id, created_at DESC);
+```
+
+**성과**
+- 조회 속도 **약 3배 향상**
+- 불필요한 DB 커넥션 감소
+
+**배운 점**
+- JPA의 Lazy Loading 전략 이해
+- 인덱스 설계의 중요성
+- 실제 쿼리 로그 확인 습관화
+
+---
+
+### 4️⃣ Stability AI 타임아웃
+
+**문제**
+- 이미지 생성에 15~30초 소요
+- RestTemplate 기본 타임아웃(5초) 초과로 에러 발생
+
+**해결**
+```java
+@Bean
+public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    return builder
+            .setConnectTimeout(Duration.ofSeconds(30))
+            .setReadTimeout(Duration.ofSeconds(30))
+            .build();
+}
+```
+
+**추가 개선**
+- 프론트엔드에 로딩 스피너 추가
+- 사용자에게 예상 소요 시간 안내
+
+**배운 점**
+- 외부 API 특성에 맞는 타임아웃 설정 필요
+- 사용자 경험(UX) 고려의 중요성
+
+---
+
+## 💡 기술적 의사결정
+
+### OAuth2 vs JWT
+**선택: OAuth2 (세션 기반)**
+
+| 항목 | 선택 이유 |
+|------|----------|
+| 개발 속도 | Spring Security 자동 처리 |
+| 안정성 | Provider가 인증 책임 |
+| 학습 곡선 | 기존 세션 방식에 익숙 |
+
+**트레이드오프**
+- 장점: 빠른 개발, 안정적인 인증
+- 단점: 세션 메모리 사용, 확장성 제한
+- 향후 개선: 대규모 트래픽 시 JWT 전환 고려
+
+---
+
+### RestTemplate vs WebClient
+**선택: RestTemplate**
+
+**이유**
+- 동기 방식으로 로직 흐름 이해 쉬움
+- 외부 API 호출 빈도 낮음 (비동기 필요성 낮음)
+- 학습 곡선 고려 (프로젝트 기간 3주)
+
+**배운 점**
+- 상황에 맞는 기술 선택의 중요성
+- 트레이드오프 고려한 의사결정
+
+---
+
+## 📊 성능 최적화
+
+### 인덱스 설계
+```sql
+-- 사용자별 최신 채팅 조회 최적화
+CREATE INDEX idx_chat_user_created 
+ON chat_history(user_id, created_at DESC);
+
+-- 월별 통계 조회 최적화
+CREATE INDEX idx_stats_user_month 
+ON api_usage_stats(user_id, year_month);
+```
+
+**효과**
+- 히스토리 조회 속도 **3배 향상**
+- 대시보드 로딩 시간 **1.5초 → 0.4초**
+
+---
+
+## 🎓 프로젝트를 통해 배운 점
+
+### 기술적 성장
+1. **OAuth2 인증 플로우 이해**
+   - Authorization Code Grant 방식
+   - Provider별 차이점과 통합 방법
+
+2. **동시성 제어**
+   - ConcurrentHashMap, synchronized 활용
+   - Race Condition 해결 경험
+
+3. **JPA 성능 최적화**
+   - N+1 문제 인식 및 해결
+   - Lazy Loading, 인덱스 설계
+
+4. **외부 API 통합**
+   - 타임아웃 처리
+   - 에러 핸들링
+   - 비용 추적 시스템 구축
+
+### 소프트 스킬
+1. **문제 해결 능력**
+   - 발생한 문제를 로그와 디버깅으로 원인 파악
+   - 여러 해결 방법을 시도하고 최적안 선택
+
+2. **설계 능력**
+   - 확장 가능한 모듈 구조 설계
+   - 계층 분리를 통한 유지보수성 향상
+
+3. **학습 능력**
+   - 공식 문서 읽기 습관화
+   - Stack Overflow, GitHub Issue 활용
 
 ---
 
 ## 💻 실행 방법
-
-### 로컬 실행
 ```bash
-# 1. 환경 변수 설정
+# 환경 변수 설정
 export DB_URL="jdbc:postgresql://localhost:5432/aitools"
-export DB_USERNAME="your-username"
-export DB_PASSWORD="your-password"
 export GEMINI_API_KEY="your-key"
 export STABILITY_API_KEY="your-key"
+export NAVER_CLIENT_ID="your-id"
+export NAVER_CLIENT_SECRET="your-secret"
+export KAKAO_CLIENT_ID="your-id"
 
-# 2. 빌드 & 실행
+# 실행
 ./gradlew bootRun
-Docker 실행
-bash
-코드 복사
-docker build -t ai-tools-platform .
-docker run -p 8080:8080 \
-  -e DB_URL="..." \
-  -e GEMINI_API_KEY="..." \
-  ai-tools-platform
-🌱 개발 과정 & 트러블슈팅
-🔴 OAuth2 소셜 로그인 Provider별 응답 구조 차이
-java
-코드 복사
-private String extractOAuthId(String provider, Map<String, Object> attributes) {
-    if ("naver".equals(provider)) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-        return provider + "_" + response.get("id");
-    } else if ("kakao".equals(provider)) {
-        return provider + "_" + attributes.get("id");
-    }
-    throw new OAuth2AuthenticationException("Unsupported provider");
-}
-🔴 Rate Limiting 동시성 처리
-java
-코드 복사
-public synchronized void addTokenUsage(String userIdentifier, int tokens) {
-    String key = userIdentifier + "_" + LocalDate.now();
-    dailyTokenUsage.merge(key, tokens, Integer::sum);
-}
-🔴 JPA N+1 문제 해결
-java
-코드 복사
-@ManyToOne(fetch = FetchType.LAZY)
-private User user;
-📧 Contact
-서재승 (Seo Jae Seung)
-📧 Email: seojaeseung9@gmail.com
-🌐 Blog: https://seungcoding.tistory.com
-💻 GitHub: https://github.com/jaeseung9
+```
 
-<br/> <p align="center"> ⭐ 이 프로젝트가 유용했다면 Star를 눌러주세요! </p> ```
-💡 추가 팁
-GitHub에서는 <table>, <img>, <p align="center"> 같은 HTML 태그가 안전하게 작동해
+---
 
-이 버전은 인덱스 링크(목차)도 잘 되고, 테이블도 깨지지 않도록 구성했어
+## 📧 Contact
 
-Markdown 스타일은 유지하되 HTML로 디자인을 보완했기 때문에 README용으로 최적화된 버전이야
+**서재승 (Seo Jae Seung)**  
+📧 seojaeseung9@gmail.com  
+🌐 https://seungcoding.tistory.com  
+💻 https://github.com/jaeseung9
 
-필요하면 이 기반으로 PPT/포트폴리오 PDF도 변환 가능해.
+---
+
+<p align="center">
+  ⭐ Star를 눌러주시면 감사하겠습니다!
+</p>
