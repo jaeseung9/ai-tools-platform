@@ -89,10 +89,11 @@
 
 
 ### 전체 구조
-```
+
+
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/021758b3-e7cb-491f-acef-21089e6ffd45" />
 
-```
+
 
 ### 핵심 설계 원칙
 
