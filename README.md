@@ -90,9 +90,7 @@
 
 ### 전체 구조
 
-
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/021758b3-e7cb-491f-acef-21089e6ffd45" />
-
+<img width="1536" height="1024" alt="ChatGPT Image 2025년 11월 19일 오후 05_13_57" src="https://github.com/user-attachments/assets/b3d27192-b07f-4425-85a0-7d796f24da84" />
 
 
 ### 핵심 설계 원칙
