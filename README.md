@@ -401,7 +401,3 @@ export KAKAO_CLIENT_ID="your-id"
 💻 https://github.com/jaeseung9
 
 ---
-
-<p align="center">
-  ⭐ Star를 눌러주시면 감사하겠습니다!
-</p>
