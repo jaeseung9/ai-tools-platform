@@ -85,23 +85,13 @@
 
 ## 🏗️ 시스템 아키텍처 및 설계
 
+
+
+
 ### 전체 구조
 ```
-사용자
-  ↓
-[Frontend] → REST API 호출
-  ↓
-[Security Filter]
-  - Rate Limiting (토큰 제한)
-  - OAuth2 인증
-  ↓
-[Controller] → 요청/응답 처리
-  ↓
-[Service] → 비즈니스 로직 + 외부 API 호출
-  ↓
-[Repository] → JPA 데이터 접근
-  ↓
-[PostgreSQL] → 데이터 영속화
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/021758b3-e7cb-491f-acef-21089e6ffd45" />
+
 ```
 
 ### 핵심 설계 원칙
