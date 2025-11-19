@@ -45,6 +45,8 @@
 
 > 네이버/카카오 소셜 로그인을 통해 Google Gemini, Stability AI 등 여러 AI API를  
 > 하나의 인터페이스에서 사용하고, 실시간으로 사용량과 비용을 추적할 수 있는 통합 플랫폼
+> <img width="363" height="254" alt="image" src="https://github.com/user-attachments/assets/f86000e7-272e-4acb-81df-97a0f0f3afaa" />
+
 
 ---
 
