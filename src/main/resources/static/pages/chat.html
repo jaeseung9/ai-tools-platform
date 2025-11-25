@@ -279,7 +279,6 @@
     const usedTokensEl = document.getElementById('usedTokens');
     const tokenProgressEl = document.getElementById('tokenProgress');
 
-    // 페이지 로드 시 히스토리 및 토큰 정보 불러오기
     window.addEventListener('DOMContentLoaded', () => {
         loadHistory();
         loadTokenInfo();
@@ -290,7 +289,6 @@
         if (e.key === 'Enter') sendMessage();
     });
 
-    // 토큰 정보 불러오기
     async function loadTokenInfo() {
         try {
             const response = await fetch('/api/chat/remaining-tokens');
@@ -303,25 +301,20 @@
         }
     }
 
-    // 토큰 표시 업데이트
     function updateTokenDisplay(data) {
         const remaining = data.remainingTokens;
         const used = data.usedTokens;
-        const limit = data.dailyLimit;  // API에서 받아온 값 사용
+        const limit = data.dailyLimit;
         const percentage = (used / limit) * 100;
 
-        // 숫자 표시
         remainingTokensEl.textContent = remaining.toLocaleString();
         usedTokensEl.textContent = used.toLocaleString();
 
-        // 일일 제한도 동적으로 표시 (추가!)
         document.querySelector('.token-item:nth-child(3) .token-value').textContent =
             limit.toLocaleString();
 
-        // 프로그레스 바
         tokenProgressEl.style.width = percentage + '%';
 
-        // 색상 변경
         if (percentage >= 90) {
             remainingTokensEl.classList.add('danger');
             tokenProgressEl.classList.add('danger');
@@ -337,7 +330,6 @@
         }
     }
 
-    // 히스토리 불러오기 함수
     async function loadHistory() {
         try {
             const response = await fetch('/api/chat/history');
@@ -394,10 +386,9 @@
                 const data = await response.json();
                 addMessage(data.message, 'ai');
 
-                // 메시지 전송 후 토큰 정보 업데이트
                 loadTokenInfo();
             } else if (response.status === 429) {
-                // Rate Limit 에러 - 특별한 UI로 표시
+
                 const error = await response.json();
                 showRateLimitError(error.message);
                 loadTokenInfo();

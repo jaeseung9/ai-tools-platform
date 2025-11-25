@@ -25,7 +25,7 @@ public class ChatService {
 
     private final ChatHistoryRepository chatHistoryRepository;
     private final UserRepository userRepository;
-    private final RateLimitFilter rateLimitFilter;  // 추가!
+    private final RateLimitFilter rateLimitFilter;
     private final RestTemplate restTemplate = new RestTemplate();
     private final ApiUsageService apiUsageService;
 
@@ -39,17 +39,14 @@ public class ChatService {
     public ChatDto.Response sendMessage(String identifier, String message) {
         User user = findUserByIdentifier(identifier);
 
-        // Gemini API 호출
         Map<String, Object> response = callGemini(message);
 
         String aiMessage = extractMessage(response);
         int totalTokens = extractTokens(response);
         double cost = CostCalculator.calculateChatCost(totalTokens / 2, totalTokens / 2);
 
-        // 토큰 사용량 기록 (추가!)
         rateLimitFilter.addTokenUsage(identifier, totalTokens);
 
-        // DB 저장
         ChatHistory history = ChatHistory.builder()
                 .user(user)
                 .userMessage(message)

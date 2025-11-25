@@ -20,26 +20,24 @@ public class ApiUsageService {
     private final ApiUsageStatsRepository apiUsageStatsRepository;
     private final UserRepository userRepository;
 
-    /**
-     * API 사용량 기록 (Chat, Image, Grammar 호출 후 실행)
-     */
+
     @Transactional
     public void recordUsage(String identifier, String toolType, double cost) {
         User user = findUserByIdentifier(identifier);
         String yearMonth = getCurrentYearMonth();
 
-        // 기존 통계 조회 또는 새로 생성
+
         Optional<ApiUsageStats> existingStats = apiUsageStatsRepository
                 .findByUserIdAndToolTypeAndYearMonth(user.getId(), toolType, yearMonth);
 
         if (existingStats.isPresent()) {
-            // 기존 데이터 업데이트
+
             ApiUsageStats stats = existingStats.get();
             stats.setUsageCount(stats.getUsageCount() + 1);
             stats.setTotalCost(stats.getTotalCost() + cost);
             apiUsageStatsRepository.save(stats);
         } else {
-            // 새 데이터 생성
+
             ApiUsageStats newStats = ApiUsageStats.builder()
                     .user(user)
                     .toolType(toolType)
@@ -51,9 +49,7 @@ public class ApiUsageService {
         }
     }
 
-    /**
-     * 이번 달 전체 통계 조회
-     */
+
     public MonthlyStatsDto getMonthlyStats(String identifier) {
         User user = findUserByIdentifier(identifier);
         String yearMonth = getCurrentYearMonth();
@@ -82,9 +78,7 @@ public class ApiUsageService {
                 .build();
     }
 
-    /**
-     * 최근 N개월 통계 조회
-     */
+
     public RecentMonthsStatsDto getRecentMonthsStats(String identifier, int months) {
         User user = findUserByIdentifier(identifier);
         String startMonth = getStartYearMonth(months);
@@ -96,9 +90,7 @@ public class ApiUsageService {
                 .build();
     }
 
-    /**
-     * 도구별 비용 비율 계산
-     */
+
     public CostBreakdownDto getCostBreakdown(String identifier) {
         User user = findUserByIdentifier(identifier);
         String yearMonth = getCurrentYearMonth();
@@ -124,7 +116,6 @@ public class ApiUsageService {
                 .build();
     }
 
-    // ========== Private Methods ==========
 
     private User findUserByIdentifier(String identifier) {
         if (identifier.contains("@")) {
@@ -159,7 +150,6 @@ public class ApiUsageService {
                 .orElse(0.0);
     }
 
-    // ========== DTO Classes ==========
 
     @lombok.Data
     @lombok.NoArgsConstructor

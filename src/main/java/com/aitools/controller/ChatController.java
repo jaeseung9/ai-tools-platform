@@ -19,7 +19,7 @@ import java.util.Map;
 public class ChatController {
 
     private final ChatService chatService;
-    private final RateLimitFilter rateLimitFilter;  // 추가!
+    private final RateLimitFilter rateLimitFilter;
 
     @PostMapping("/message")
     public ResponseEntity<ChatDto.Response> sendMessage(@RequestBody ChatDto.Request request) {
@@ -42,13 +42,12 @@ public class ChatController {
         return ResponseEntity.ok().build();
     }
 
-    // 남은 토큰 조회 API
     @GetMapping("/remaining-tokens")
     public ResponseEntity<Map<String, Object>> getRemainingTokens() {
         String identifier = getCurrentUserIdentifier();
         int remaining = rateLimitFilter.getRemainingTokens(identifier);
-        int dailyLimit = rateLimitFilter.getDailyLimit();  // 동적으로 가져오기
-        int used = rateLimitFilter.getUsedTokens(identifier);  // 동적으로 가져오기
+        int dailyLimit = rateLimitFilter.getDailyLimit();
+        int used = rateLimitFilter.getUsedTokens(identifier);
 
         Map<String, Object> result = new HashMap<>();
         result.put("remainingTokens", remaining);

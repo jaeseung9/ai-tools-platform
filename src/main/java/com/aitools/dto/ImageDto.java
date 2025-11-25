@@ -13,7 +13,7 @@ public class ImageDto {
     @AllArgsConstructor
     public static class Request {
         private String prompt;
-        private String size = "1024x1024";  // 기본값
+        private String size = "1024x1024";
     }
 
     @Data

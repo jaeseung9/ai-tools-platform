@@ -18,13 +18,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, length = 100)  // nullable 제거!
-    private String oauthId;  // 소셜: "naver_12345", 일반: null
+    @Column(unique = true, length = 100)
+    private String oauthId;
 
     @Column(length = 20)
-    private String provider;  // "naver", "kakao", "local"
+    private String provider;
 
-    @Column(unique = true, length = 100)  // 이메일은 항상 unique!
+    @Column(unique = true, length = 100)
     private String email;
 
     @Column(length = 50)
@@ -34,13 +34,13 @@ public class User {
     private String profileImage;
 
     @Column(length = 100)
-    private String password;  // 일반 로그인용 (암호화 저장!)
+    private String password;
 
     @Column(length = 20)
     private String themePreference = "light";
 
     @Column(nullable = false)
-    private Boolean emailVerified = false;  // 이메일 인증 여부 (나중에 사용)
+    private Boolean emailVerified = false;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

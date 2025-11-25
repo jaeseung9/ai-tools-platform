@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    // 하루 토큰 제한 (테스트용: 100, 운영: 10000)
     private static final int DAILY_TOKEN_LIMIT = 100;
 
     private final Map<String, Integer> dailyTokenUsage = new ConcurrentHashMap<>();
@@ -63,7 +62,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
         int usedTokens = dailyTokenUsage.getOrDefault(key, 0);
         int remaining = DAILY_TOKEN_LIMIT - usedTokens;
 
-        // 음수면 0으로 반환 (수정!)
         return Math.max(remaining, 0);
     }
 
@@ -75,7 +73,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
         String key = userIdentifier + "_" + LocalDate.now();
         int used = dailyTokenUsage.getOrDefault(key, 0);
 
-        // 사용량이 제한을 초과하면 제한값으로 표시 (추가!)
         return Math.min(used, DAILY_TOKEN_LIMIT);
     }
 

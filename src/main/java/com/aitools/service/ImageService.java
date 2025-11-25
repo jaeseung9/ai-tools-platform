@@ -38,11 +38,9 @@ public class ImageService {
     public ImageDto.Response generateImage(String identifier, String prompt, String size) {
         User user = findUserByIdentifier(identifier);
 
-        // DALL-E 3 API 호출
         String imageUrl = callDallE3(prompt, size);
         double cost = CostCalculator.calculateImageCost(size);
 
-        // DB 저장
         ImageHistory history = ImageHistory.builder()
                 .user(user)
                 .prompt(prompt)
@@ -105,11 +103,10 @@ public class ImageService {
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
             ResponseEntity<Map> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, Map.class);
 
-            // Base64 이미지 데이터 추출
+
             List<Map<String, Object>> artifacts = (List<Map<String, Object>>) response.getBody().get("artifacts");
             String base64Image = (String) artifacts.get(0).get("base64");
 
-            // Base64를 Data URL로 변환 (프론트엔드에서 바로 표시 가능)
             return "data:image/png;base64," + base64Image;
 
         } catch (Exception e) {

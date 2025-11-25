@@ -16,9 +16,7 @@ public class DashboardController {
 
     private final ApiUsageService apiUsageService;
 
-    /**
-     * 이번 달 통계 조회
-     */
+
     @GetMapping("/stats")
     public ResponseEntity<ApiUsageService.MonthlyStatsDto> getMonthlyStats() {
         String identifier = getCurrentUserIdentifier();
@@ -26,9 +24,7 @@ public class DashboardController {
         return ResponseEntity.ok(stats);
     }
 
-    /**
-     * 최근 N개월 통계 조회
-     */
+
     @GetMapping("/usage-chart")
     public ResponseEntity<ApiUsageService.RecentMonthsStatsDto> getUsageChart(
             @RequestParam(defaultValue = "6") int months) {
@@ -37,9 +33,7 @@ public class DashboardController {
         return ResponseEntity.ok(stats);
     }
 
-    /**
-     * 도구별 비용 비율
-     */
+
     @GetMapping("/cost-breakdown")
     public ResponseEntity<ApiUsageService.CostBreakdownDto> getCostBreakdown() {
         String identifier = getCurrentUserIdentifier();

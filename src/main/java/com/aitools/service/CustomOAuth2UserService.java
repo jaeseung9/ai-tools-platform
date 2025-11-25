@@ -24,7 +24,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        // ===== 디버깅 로그 =====
         System.out.println("========================================");
         System.out.println("OAuth Login Attempt");
         System.out.println("Provider: " + registrationId);

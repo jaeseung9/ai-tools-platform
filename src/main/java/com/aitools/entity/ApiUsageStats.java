@@ -34,7 +34,7 @@ public class ApiUsageStats {
     private User user;
 
     @Column(nullable = false, length = 20)
-    private String toolType;  // "CHAT", "IMAGE", "GRAMMAR"
+    private String toolType;
 
     @Column(nullable = false)
     private Integer usageCount = 0;
@@ -42,7 +42,7 @@ public class ApiUsageStats {
     @Column(nullable = false)
     private Double totalCost = 0.0;
 
-    @Column(nullable = false, length = 7, name = "`year_month`")  // 백틱 추가
+    @Column(nullable = false, length = 7, name = "`year_month`")
     private String yearMonth;
 
     @Column(nullable = false, updatable = false)
